@@ -3,6 +3,8 @@ public abstract class Piece {
 
 	private final Color color;
 
+	private MoveStrategy moveStrategy;
+
 	private final String ID;
 
 	private int x, y;
@@ -58,7 +60,13 @@ public abstract class Piece {
 		this.y = newY;
 	}
 
-	public abstract boolean possibleMove(int x, int y);
+	public void setMoveStrategy(MoveStrategy moveStrategy) {
+		this.moveStrategy = moveStrategy;
+	}
+
+	public boolean possibleMove(int x, int y) {
+		return this.moveStrategy.possibleMove(x, y, this);
+	};
 
 	public int move(int x, int y, Piece other) {
 		if (this.possibleMove(x, y) != true) {
@@ -101,12 +109,12 @@ public abstract class Piece {
 			if (this.getColor() == Color.WHITE && y == 0) {
 				Board.setPiece(x, y, null);
 				Board.white.remove(this);
-				Queen yasQueen = new Queen(Color.WHITE, "queen" + file, x, y);
+				Queen queen = new Queen(Color.WHITE, "queen" + file, x, y);
 				System.out.println("Pawn promoted!");
 			} else if (this.getColor() == Color.BLACK && y == 7) {
 				Board.setPiece(x, y, null);
 				Board.black.remove(this);
-				Queen yasQueen = new Queen(Color.BLACK, "queen" + file, x, y);
+				Queen queen = new Queen(Color.BLACK, "queen" + file, x, y);
 				System.out.println("Pawn promoted!");
 			}
 		}
@@ -146,5 +154,7 @@ public abstract class Piece {
 
 	public abstract String toString();
 
-	public abstract boolean canMove();
+	public boolean canMove() {
+		return this.moveStrategy.canMove(this);
+	};
 }

@@ -2,8 +2,6 @@
 import java.util.Scanner;
 
 public class Game {
-
-	// TODO en passant
 	public static void main(String[] args) {
 		Scanner moveChoice = new Scanner(System.in);
 

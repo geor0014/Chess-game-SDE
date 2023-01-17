@@ -3,27 +3,10 @@ public class King extends Piece {
 
 	public King(Color color, String ID, int startX, int startY) {
 		super(color, ID, startX, startY);
+		this.setMoveStrategy(new KingMoveStrategy());
 	}
 
 	boolean isFirstMove = true;
-
-	@Override
-	public boolean possibleMove(int x, int y) {
-		// cannot capture own piece
-		if (this.sameColor(Board.getPiece(x, y)) == true) {
-			return false;
-		}
-		// bishop
-		else if (Math.abs(getX() - x) == 1 && Math.abs(getY() - y) == 1) {
-			return true;
-		}
-		// rook
-		else if (Math.abs(getX() - x) == 1 && Math.abs(getY() - y) == 0
-				|| Math.abs(getX() - x) == 0 && Math.abs(getY() - y) == 1) {
-			return true;
-		}
-		return false;
-	}
 
 	@Override
 	public String toString() {
@@ -102,48 +85,4 @@ public class King extends Piece {
 		}
 		return -1;
 	}
-
-	@Override
-	public boolean canMove() {
-		int x = this.getX();
-		int y = this.getY();
-
-		// bishop
-		// top left
-		if (this.testMove(x - 1, y - 1)) {
-			return true;
-		}
-		// top right
-		if (this.testMove(x + 1, y - 1)) {
-			return true;
-		}
-		// bottom left
-		if (this.testMove(x - 1, y + 1)) {
-			return true;
-		}
-		// bottom right
-		if (this.testMove(x + 1, y + 1)) {
-			return true;
-		}
-
-		// rook
-		// left
-		if (this.testMove(x - 1, y)) {
-			return true;
-		}
-		// right
-		if (this.testMove(x + 1, y)) {
-			return true;
-		}
-		// down
-		if (this.testMove(x, y + 1)) {
-			return true;
-		}
-		// up
-		if (this.testMove(x, y - 1)) {
-			return true;
-		}
-		return false;
-	}
-
 }
