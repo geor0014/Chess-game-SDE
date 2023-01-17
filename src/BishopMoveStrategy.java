@@ -2,7 +2,7 @@
 public class BishopMoveStrategy implements MoveStrategy {
     public boolean possibleMove(int x, int y, Piece piece) {
         // cannot capture own piece
-        if (piece.sameColor(Board.getPiece(x, y)) == true) {
+        if (piece.sameColor(Board.getInstance().getPiece(x, y)) == true) {
             return false;
         }
         // invalid move for bishop
@@ -10,7 +10,7 @@ public class BishopMoveStrategy implements MoveStrategy {
             return false;
         }
 
-        if (Board.isPathClear(piece.getX(), piece.getY(), x, y)) {
+        if (Board.getInstance().isPathClear(piece.getX(), piece.getY(), x, y)) {
             return true;
         }
         return false;

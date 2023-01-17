@@ -6,17 +6,18 @@ public class PawnMoveStrategy implements MoveStrategy {
 
             // 2 spaces forward
             if (piece.isFirstMove == true && piece.getY() - y == 2 && piece.getX() - x == 0
-                    && Board.isPathClear(piece.getX(), piece.getY(), x, y) && Board.getPiece(x, y) == null) {
+                    && Board.getInstance().isPathClear(piece.getX(), piece.getY(), x, y)
+                    && Board.getInstance().getPiece(x, y) == null) {
                 return true;
             }
             // 1 space forward
-            if (piece.getY() - y == 1 && piece.getX() - x == 0 && Board.getPiece(x, y) == null) {
+            if (piece.getY() - y == 1 && piece.getX() - x == 0 && Board.getInstance().getPiece(x, y) == null) {
                 return true;
             }
 
             // diagonal
-            if (piece.getY() - y == 1 && Math.abs(piece.getX() - x) == 1 && Board.getPiece(x, y) != null
-                    && piece.sameColor(Board.getPiece(x, y)) == false) {
+            if (piece.getY() - y == 1 && Math.abs(piece.getX() - x) == 1 && Board.getInstance().getPiece(x, y) != null
+                    && piece.sameColor(Board.getInstance().getPiece(x, y)) == false) {
                 return true;
             }
         }
@@ -24,17 +25,18 @@ public class PawnMoveStrategy implements MoveStrategy {
         if (piece.getColor() == Color.BLACK) {
             // 2 spaces forward
             if (piece.isFirstMove == true && piece.getY() - y == -2 && piece.getX() - x == 0
-                    && Board.isPathClear(piece.getX(), piece.getY(), x, y) && Board.getPiece(x, y) == null) {
+                    && Board.getInstance().isPathClear(piece.getX(), piece.getY(), x, y)
+                    && Board.getInstance().getPiece(x, y) == null) {
                 return true;
             }
             // 1 space forward
-            if (piece.getY() - y == -1 && piece.getX() - x == 0 && Board.getPiece(x, y) == null) {
+            if (piece.getY() - y == -1 && piece.getX() - x == 0 && Board.getInstance().getPiece(x, y) == null) {
                 return true;
             }
 
             // diagonal
-            if (piece.getY() - y == -1 && Math.abs(piece.getX() - x) == 1 && Board.getPiece(x, y) != null
-                    && piece.sameColor(Board.getPiece(x, y)) == false) {
+            if (piece.getY() - y == -1 && Math.abs(piece.getX() - x) == 1 && Board.getInstance().getPiece(x, y) != null
+                    && piece.sameColor(Board.getInstance().getPiece(x, y)) == false) {
                 return true;
             }
         }

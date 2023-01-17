@@ -3,7 +3,7 @@ public class KingMoveStrategy implements MoveStrategy {
     @Override
     public boolean possibleMove(int x, int y, Piece piece) {
         // cannot capture own piece
-        if (piece.sameColor(Board.getPiece(x, y)) == true) {
+        if (piece.sameColor(Board.getInstance().getPiece(x, y)) == true) {
             return false;
         }
         // bishop

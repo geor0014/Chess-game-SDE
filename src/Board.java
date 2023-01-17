@@ -1,12 +1,24 @@
 import java.util.ArrayList;
 
 public class Board {
-	public static ArrayList<Piece> black = new ArrayList<Piece>();
-	public static ArrayList<Piece> white = new ArrayList<Piece>();
+	private static Board instance = null;
 
-	static Piece board[][] = new Piece[8][8];
+	public ArrayList<Piece> black = new ArrayList<Piece>();
+	public ArrayList<Piece> white = new ArrayList<Piece>();
 
-	static void printBoard() {
+	private Piece board[][] = new Piece[8][8];
+
+	private Board() {
+	}
+
+	public static Board getInstance() {
+		if (instance == null) {
+			instance = new Board();
+		}
+		return instance;
+	}
+
+	public void printBoard() {
 		System.out.println("    a   b   c   d   e   f   g   h");
 
 		System.out.println("  ---------------------------------");
@@ -30,7 +42,7 @@ public class Board {
 		System.out.println();
 	}
 
-	static void startGame() {
+	public void startGame() {
 		System.out.println("How to play:");
 		System.out.println("For pawns, type in \"pawn\" followed by the file letter. For example, \"pawnA\"");
 		System.out.println("For bishops, knights and rooks, put \"Q\" or \"K\" to specify Queen's or King's side");
@@ -80,7 +92,7 @@ public class Board {
 	}
 
 	// set piece to provided coordinates
-	public static void setPiece(int x, int y, Piece piece) {
+	public void setPiece(int x, int y, Piece piece) {
 		if (piece != null) {
 			piece.setX(x);
 			piece.setY(y);
@@ -89,12 +101,12 @@ public class Board {
 	}
 
 	// check spot on board
-	public static Piece getPiece(int x, int y) {
+	public Piece getPiece(int x, int y) {
 		return board[y][x];
 	}
 
 	// match String piece from user with Piece on board
-	public static Piece getPiece(String piece, Color color) {
+	public Piece getPiece(String piece, Color color) {
 
 		if (color == Color.WHITE) {
 
@@ -120,7 +132,7 @@ public class Board {
 
 	}
 
-	public static boolean isPathClear(int x1, int y1, int x2, int y2) {
+	public boolean isPathClear(int x1, int y1, int x2, int y2) {
 
 		int xDistance = x2 - x1;
 		int yDistance = y2 - y1;
@@ -159,7 +171,7 @@ public class Board {
 
 	}
 
-	static int processMove(String move, Color color) {
+	public int processMove(String move, Color color) {
 
 		String[] splitStr = move.split(" ");
 		String piece = splitStr[0];
@@ -197,7 +209,7 @@ public class Board {
 
 	}
 
-	public static boolean checkForCheck(Color color) {
+	public boolean checkForCheck(Color color) {
 
 		Piece king = getPiece("king", color);
 
@@ -222,7 +234,7 @@ public class Board {
 		return false;
 	}
 
-	public static boolean mate(Color color) {
+	public boolean mate(Color color) {
 
 		if (color == Color.WHITE) {
 			for (int i = 0; i < white.size(); i++) {
@@ -243,7 +255,7 @@ public class Board {
 		return true;
 	}
 
-	public static boolean staleMate(Color color) {
+	public boolean staleMate(Color color) {
 
 		// insufficient material stalemate
 		Piece knightK = getPiece("knightK", color);
