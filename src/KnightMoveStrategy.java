@@ -1,3 +1,4 @@
+// this class is used to check if a knight can move to a certain position on the board and if it can move at all
 public class KnightMoveStrategy implements MoveStrategy {
 
     @Override

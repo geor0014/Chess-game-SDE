@@ -3,6 +3,7 @@ public abstract class Piece {
 
 	private final Color color;
 
+	// set the move strategy for each piece
 	private MoveStrategy moveStrategy;
 
 	private final String ID;
