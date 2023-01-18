@@ -1,5 +1,5 @@
 
-public abstract class Piece {
+public abstract class Piece implements IChessPiece {
 
 	private final Color color;
 
@@ -51,7 +51,7 @@ public abstract class Piece {
 		return this.x;
 	}
 
-	void setX(int newX) {
+	public void setX(int newX) {
 		this.x = newX;
 	}
 
@@ -59,8 +59,12 @@ public abstract class Piece {
 		return this.y;
 	}
 
-	void setY(int newY) {
+	public void setY(int newY) {
 		this.y = newY;
+	}
+
+	public boolean getIsFirstMove() {
+		return this.isFirstMove;
 	}
 
 	public void setMoveStrategy(MoveStrategy moveStrategy) {

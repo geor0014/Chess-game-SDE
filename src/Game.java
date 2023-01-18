@@ -9,7 +9,6 @@ public class Game {
 
 		while (true) {
 			board.startGame();
-			;
 
 			int turns = 0;
 			Color color;
