@@ -139,6 +139,97 @@ public abstract class Piece {
 	};
 }
 ```
+# Daniel: Singleton Design Pattern
+I implemented the Singleton design pattern to the ```Board.java``` class, making sure that there is only one instance of that class, providing a global access point to it.
+## Implementation
+### Board.java
+```java
+private static Board instance = null;
+
+	private ArrayList<Piece> black = new ArrayList<Piece>();
+	private ArrayList<Piece> white = new ArrayList<Piece>();
+
+	private Piece board[][] = new Piece[8][8];
+
+	private Board() {
+	}
+
+	public static Board getInstance() {
+		if (instance == null) {
+			instance = new Board();
+		}
+		return instance;
+	}
+	
+	public void printBoard(){
+	    ...print board code
+	}
+	
+	public void startGame() {
+	    ... start game code
+	}
+	
+	public void setPiece (){
+	    ..
+	}
+	
+	public boolean mate(Color color){
+	    ..check for mate logic.
+	}
+	
+	public ArrayList<Piece> getWhite() {
+		return white;
+	}
+
+	public ArrayList<Piece> getBlack() {
+		return black;
+	}
+```
+### Game.java
+Other classes can get an instance of the Board class by doing this:
+```Board board = Board.getInstance();```
+like in the example below
+```java
+import java.util.Scanner;
+
+public class Game {
+	public static void main(String[] args) {
+		Scanner moveChoice = new Scanner(System.in);
+
+		Board board = Board.getInstance();
+
+		while (true) {
+			board.startGame();
+			;
+
+			int turns = 0;
+			Color color;
+
+			while (true) {
+				board.printBoard();
+				// check for check
+				if (turns % 2 == 0) {
+					color = Color.WHITE;
+				} else
+					color = Color.BLACK;
+
+				if (board.staleMate(color) == true) {
+					System.out.println("game over, stalemate");
+					break;
+				}
+				if (board.checkForCheck(color) == true) {
+					if (board.mate(color) == true) {
+
+						System.out.printf("Checkmate, %s wins \n", color == Color.WHITE ? "Black" : "White");
+						break;
+					}
+					System.out.printf("%s is in Check! \n", color == Color.WHITE ? "White" : "Black");
+				}
+		}
+}
+
+```
+
 ## How to build and run
 ```sh
 $ cd Chess/src
