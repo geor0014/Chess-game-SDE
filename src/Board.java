@@ -8,6 +8,49 @@ public class Board {
 
 	private Piece board[][] = new Piece[8][8];
 
+	private Piece blackRookQ;
+	private Piece blackKnightQ;
+	private Piece blackBishopQ;
+	private Piece blackQueen;
+	private Piece blackKing;
+	//
+	private PieceWithCastling blackCastlingKing;
+	//
+	private Piece blackBishopK;
+	private Piece blackknightK;
+	private Piece blackRookK;
+
+	private Piece blackPawnA;
+	private Piece blackPawnB;
+	private Piece blackPawnC;
+	private Piece blackPawnD;
+	private Piece blackPawnE;
+	private Piece blackPawnF;
+	private Piece blackPawnG;
+	private Piece blackPawnH;
+
+	// white
+	private Piece whiteRookQ;
+	private Piece whiteKnightQ;
+	private Piece whiteBishopQ;
+	private Piece whiteQueen;
+	private Piece whiteKing;
+	//
+	private PieceWithCastling whiteCastlingKing;
+	//
+	private Piece whiteBishopK;
+	private Piece whiteKnightK;
+	private Piece whiteRookK;
+
+	private Piece whitePawnA;
+	private Piece whitePawnB;
+	private Piece whitePawnC;
+	private Piece whitePawnD;
+	private Piece whitePawnE;
+	private Piece whitePawnF;
+	private Piece whitePawnG;
+	private Piece whitePawnH;
+
 	private Board() {
 	}
 
@@ -51,53 +94,58 @@ public class Board {
 				"Pawns auto-promote to queens. The new queens are referenced by what the pawns file was. \"queenH\"");
 		System.out.println(
 				"To castle, type castle, followed by a space and then a capital K or Q to specify a side. \"castle Q\"\n");
-
 		// black
-		new Rook(Color.BLACK, "rookQ", 0, 0);
-		new Knight(Color.BLACK, "knightQ", 1, 0);
-		new Bishop(Color.BLACK, "bishopQ", 2, 0);
-		new Queen(Color.BLACK, "queen", 3, 0);
-		new King(Color.BLACK, "king", 4, 0);
-		new Bishop(Color.BLACK, "bishopK", 5, 0);
-		new Knight(Color.BLACK, "knightK", 6, 0);
-		new Rook(Color.BLACK, "rookK", 7, 0);
+		this.blackRookQ = new Rook(Color.BLACK, "rookQ", 0, 0);
+		this.blackKnightQ = new Knight(Color.BLACK, "knightQ", 1, 0);
+		this.blackBishopQ = new Bishop(Color.BLACK, "bishopQ", 2, 0);
+		this.blackQueen = new Queen(Color.BLACK, "queen", 3, 0);
+		this.blackKing = new King(Color.BLACK, "king", 4, 0);
+		//
+		this.blackCastlingKing = new PieceWithCastling(blackKing);
+		//
+		this.blackBishopK = new Bishop(Color.BLACK, "bishopK", 5, 0);
+		this.blackknightK = new Knight(Color.BLACK, "knightK", 6, 0);
+		this.blackRookK = new Rook(Color.BLACK, "rookK", 7, 0);
 
-		new Pawn(Color.BLACK, "pawnA", 0, 1);
-		new Pawn(Color.BLACK, "pawnB", 1, 1);
-		new Pawn(Color.BLACK, "pawnC", 2, 1);
-		new Pawn(Color.BLACK, "pawnD", 3, 1);
-		new Pawn(Color.BLACK, "pawnE", 4, 1);
-		new Pawn(Color.BLACK, "pawnF", 5, 1);
-		new Pawn(Color.BLACK, "pawnG", 6, 1);
-		new Pawn(Color.BLACK, "pawnH", 7, 1);
+		this.blackPawnA = new Pawn(Color.BLACK, "pawnA", 0, 1);
+		this.blackPawnB = new Pawn(Color.BLACK, "pawnB", 1, 1);
+		this.blackPawnC = new Pawn(Color.BLACK, "pawnC", 2, 1);
+		this.blackPawnD = new Pawn(Color.BLACK, "pawnD", 3, 1);
+		this.blackPawnE = new Pawn(Color.BLACK, "pawnE", 4, 1);
+		this.blackPawnF = new Pawn(Color.BLACK, "pawnF", 5, 1);
+		this.blackPawnG = new Pawn(Color.BLACK, "pawnG", 6, 1);
+		this.blackPawnH = new Pawn(Color.BLACK, "pawnH", 7, 1);
 
 		// white
-		new Rook(Color.WHITE, "rookQ", 0, 7);
-		new Knight(Color.WHITE, "knightQ", 1, 7);
-		new Bishop(Color.WHITE, "bishopQ", 2, 7);
-		new Queen(Color.WHITE, "queen", 3, 7);
-		new King(Color.WHITE, "king", 4, 7);
-		new Bishop(Color.WHITE, "bishopK", 5, 7);
-		new Knight(Color.WHITE, "knightK", 6, 7);
-		new Rook(Color.WHITE, "rookK", 7, 7);
+		this.whiteRookQ = new Rook(Color.WHITE, "rookQ", 0, 7);
+		this.whiteKnightQ = new Knight(Color.WHITE, "knightQ", 1, 7);
+		this.whiteBishopQ = new Bishop(Color.WHITE, "bishopQ", 2, 7);
+		this.whiteQueen = new Queen(Color.WHITE, "queen", 3, 7);
+		this.whiteKing = new King(Color.WHITE, "king", 4, 7);
+		//
+		this.whiteCastlingKing = new PieceWithCastling(whiteKing);
+		//
+		this.whiteBishopK = new Bishop(Color.WHITE, "bishopK", 5, 7);
+		this.whiteKnightK = new Knight(Color.WHITE, "knightK", 6, 7);
+		this.whiteRookK = new Rook(Color.WHITE, "rookK", 7, 7);
 
-		new Pawn(Color.WHITE, "pawnA", 0, 6);
-		new Pawn(Color.WHITE, "pawnB", 1, 6);
-		new Pawn(Color.WHITE, "pawnC", 2, 6);
-		new Pawn(Color.WHITE, "pawnD", 3, 6);
-		new Pawn(Color.WHITE, "pawnE", 4, 6);
-		new Pawn(Color.WHITE, "pawnF", 5, 6);
-		new Pawn(Color.WHITE, "pawnG", 6, 6);
-		new Pawn(Color.WHITE, "pawnH", 7, 6);
+		this.whitePawnA = new Pawn(Color.WHITE, "pawnA", 0, 6);
+		this.whitePawnB = new Pawn(Color.WHITE, "pawnB", 1, 6);
+		this.whitePawnC = new Pawn(Color.WHITE, "pawnC", 2, 6);
+		this.whitePawnD = new Pawn(Color.WHITE, "pawnD", 3, 6);
+		this.whitePawnE = new Pawn(Color.WHITE, "pawnE", 4, 6);
+		this.whitePawnF = new Pawn(Color.WHITE, "pawnF", 5, 6);
+		this.whitePawnG = new Pawn(Color.WHITE, "pawnG", 6, 6);
+		this.whitePawnH = new Pawn(Color.WHITE, "pawnH", 7, 6);
 	}
 
 	// set piece to provided coordinates
-	public void setPiece(int x, int y, Piece piece) {
+	public void setPiece(int x, int y, IChessPiece piece) {
 		if (piece != null) {
 			piece.setX(x);
 			piece.setY(y);
 		}
-		board[y][x] = piece;
+		board[y][x] = (Piece) piece;
 	}
 
 	// check spot on board
@@ -177,8 +225,11 @@ public class Board {
 		String piece = splitStr[0];
 
 		if (piece.equals("castle")) {
-			King king = (King) getPiece("king", color);
-			return king.castle(splitStr[1]);
+			if (color == Color.BLACK) {
+				this.blackCastlingKing.castle(splitStr[1]);
+			} else {
+				this.whiteCastlingKing.castle(splitStr[1]);
+			}
 		}
 
 		// piece selected to move
