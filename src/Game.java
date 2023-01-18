@@ -5,27 +5,29 @@ public class Game {
 	public static void main(String[] args) {
 		Scanner moveChoice = new Scanner(System.in);
 
+		Board board = Board.getInstance();
+
 		while (true) {
-			Board.getInstance().startGame();
+			board.startGame();
 			;
 
 			int turns = 0;
 			Color color;
 
 			while (true) {
-				Board.getInstance().printBoard();
+				board.printBoard();
 				// check for check
 				if (turns % 2 == 0) {
 					color = Color.WHITE;
 				} else
 					color = Color.BLACK;
 
-				if (Board.getInstance().staleMate(color) == true) {
+				if (board.staleMate(color) == true) {
 					System.out.println("game over, stalemate");
 					break;
 				}
-				if (Board.getInstance().checkForCheck(color) == true) {
-					if (Board.getInstance().mate(color) == true) {
+				if (board.checkForCheck(color) == true) {
+					if (board.mate(color) == true) {
 
 						System.out.printf("Checkmate, %s wins \n", color == Color.WHITE ? "Black" : "White");
 						break;
@@ -38,7 +40,7 @@ public class Game {
 
 				String move = moveChoice.nextLine();
 				// process move
-				if (Board.getInstance().processMove(move, color) == 0) {
+				if (board.processMove(move, color) == 0) {
 					turns++;
 				} else {
 					System.out.println("illegal move");

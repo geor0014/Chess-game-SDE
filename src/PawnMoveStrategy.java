@@ -1,4 +1,5 @@
 public class PawnMoveStrategy implements MoveStrategy {
+    Board board = Board.getInstance();
 
     @Override
     public boolean possibleMove(int x, int y, Piece piece) {
@@ -6,18 +7,18 @@ public class PawnMoveStrategy implements MoveStrategy {
 
             // 2 spaces forward
             if (piece.isFirstMove == true && piece.getY() - y == 2 && piece.getX() - x == 0
-                    && Board.getInstance().isPathClear(piece.getX(), piece.getY(), x, y)
-                    && Board.getInstance().getPiece(x, y) == null) {
+                    && board.isPathClear(piece.getX(), piece.getY(), x, y)
+                    && board.getPiece(x, y) == null) {
                 return true;
             }
             // 1 space forward
-            if (piece.getY() - y == 1 && piece.getX() - x == 0 && Board.getInstance().getPiece(x, y) == null) {
+            if (piece.getY() - y == 1 && piece.getX() - x == 0 && board.getPiece(x, y) == null) {
                 return true;
             }
 
             // diagonal
-            if (piece.getY() - y == 1 && Math.abs(piece.getX() - x) == 1 && Board.getInstance().getPiece(x, y) != null
-                    && piece.sameColor(Board.getInstance().getPiece(x, y)) == false) {
+            if (piece.getY() - y == 1 && Math.abs(piece.getX() - x) == 1 && board.getPiece(x, y) != null
+                    && piece.sameColor(board.getPiece(x, y)) == false) {
                 return true;
             }
         }
@@ -25,18 +26,18 @@ public class PawnMoveStrategy implements MoveStrategy {
         if (piece.getColor() == Color.BLACK) {
             // 2 spaces forward
             if (piece.isFirstMove == true && piece.getY() - y == -2 && piece.getX() - x == 0
-                    && Board.getInstance().isPathClear(piece.getX(), piece.getY(), x, y)
-                    && Board.getInstance().getPiece(x, y) == null) {
+                    && board.isPathClear(piece.getX(), piece.getY(), x, y)
+                    && board.getPiece(x, y) == null) {
                 return true;
             }
             // 1 space forward
-            if (piece.getY() - y == -1 && piece.getX() - x == 0 && Board.getInstance().getPiece(x, y) == null) {
+            if (piece.getY() - y == -1 && piece.getX() - x == 0 && board.getPiece(x, y) == null) {
                 return true;
             }
 
             // diagonal
-            if (piece.getY() - y == -1 && Math.abs(piece.getX() - x) == 1 && Board.getInstance().getPiece(x, y) != null
-                    && piece.sameColor(Board.getInstance().getPiece(x, y)) == false) {
+            if (piece.getY() - y == -1 && Math.abs(piece.getX() - x) == 1 && board.getPiece(x, y) != null
+                    && piece.sameColor(board.getPiece(x, y)) == false) {
                 return true;
             }
         }

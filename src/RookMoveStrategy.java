@@ -1,9 +1,10 @@
 public class RookMoveStrategy implements MoveStrategy {
+    Board board = Board.getInstance();
 
     @Override
     public boolean possibleMove(int x, int y, Piece piece) {
         // cannot capture own piece
-        if (piece.sameColor(Board.getInstance().getPiece(x, y)) == true) {
+        if (piece.sameColor(board.getPiece(x, y)) == true) {
             return false;
         }
         // invalid move for rook
@@ -11,7 +12,7 @@ public class RookMoveStrategy implements MoveStrategy {
             return false;
         }
 
-        if (Board.getInstance().isPathClear(piece.getX(), piece.getY(), x, y)) {
+        if (board.isPathClear(piece.getX(), piece.getY(), x, y)) {
             return true;
         }
         return false;

@@ -1,10 +1,11 @@
 // this class is used to check if a knight can move to a certain position on the board and if it can move at all
 public class KnightMoveStrategy implements MoveStrategy {
+    Board board = Board.getInstance();
 
     @Override
     public boolean possibleMove(int x, int y, Piece piece) {
         // cannot capture own piece
-        if (piece.sameColor(Board.getInstance().getPiece(x, y)) == true) {
+        if (piece.sameColor(board.getPiece(x, y)) == true) {
             return false;
         }
 

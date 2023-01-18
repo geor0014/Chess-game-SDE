@@ -3,8 +3,8 @@ import java.util.ArrayList;
 public class Board {
 	private static Board instance = null;
 
-	public ArrayList<Piece> black = new ArrayList<Piece>();
-	public ArrayList<Piece> white = new ArrayList<Piece>();
+	private ArrayList<Piece> black = new ArrayList<Piece>();
+	private ArrayList<Piece> white = new ArrayList<Piece>();
 
 	private Piece board[][] = new Piece[8][8];
 
@@ -285,6 +285,14 @@ public class Board {
 
 		return false;
 
+	}
+
+	public ArrayList<Piece> getWhite() {
+		return white;
+	}
+
+	public ArrayList<Piece> getBlack() {
+		return black;
 	}
 
 }

@@ -12,6 +12,8 @@ public abstract class Piece {
 
 	public boolean isFirstMove;
 
+	protected Board board = Board.getInstance();
+
 	public Piece(Color color, String ID, int startX, int startY) {
 		this.color = color;
 		this.ID = ID;
@@ -19,11 +21,11 @@ public abstract class Piece {
 		this.y = startY;
 
 		if (this.getColor() == Color.WHITE) {
-			Board.getInstance().white.add(this);
+			board.getWhite().add(this);
 		} else if (this.getColor() == Color.BLACK) {
-			Board.getInstance().black.add(this);
+			board.getBlack().add(this);
 		}
-		Board.getInstance().setPiece(x, y, this);
+		board.setPiece(x, y, this);
 	}
 
 	public String getID() {
@@ -79,27 +81,27 @@ public abstract class Piece {
 		int originY = this.getY();
 
 		if (this.getColor() == Color.WHITE) {
-			Board.getInstance().black.remove(other);
+			board.getBlack().remove(other);
 		} else {
-			Board.getInstance().white.remove(other);
+			board.getWhite().remove(other);
 		}
 
-		Board.getInstance().setPiece(originX, originY, null);
-		Board.getInstance().setPiece(x, y, this);
+		board.setPiece(originX, originY, null);
+		board.setPiece(x, y, this);
 
 		boolean isFirstMoveOG = this.isFirstMove;
 		this.isFirstMove = false;
 
-		if (Board.getInstance().checkForCheck(color) == true) {
+		if (board.checkForCheck(color) == true) {
 			if (other != null) {
 				if (this.getColor() == Color.WHITE) {
-					Board.getInstance().black.add(other);
+					board.getBlack().add(other);
 				} else {
-					Board.getInstance().white.add(other);
+					board.getWhite().add(other);
 				}
 			}
-			Board.getInstance().setPiece(originX, originY, this);
-			Board.getInstance().setPiece(x, y, other);
+			board.setPiece(originX, originY, this);
+			board.setPiece(x, y, other);
 			this.isFirstMove = isFirstMoveOG;
 
 			return -1;
@@ -108,13 +110,13 @@ public abstract class Piece {
 		if (this instanceof Pawn) {
 			char file = this.getID().charAt(4);
 			if (this.getColor() == Color.WHITE && y == 0) {
-				Board.getInstance().setPiece(x, y, null);
-				Board.getInstance().white.remove(this);
+				board.setPiece(x, y, null);
+				board.getWhite().remove(this);
 				Queen queen = new Queen(Color.WHITE, "queen" + file, x, y);
 				System.out.println("Pawn promoted!");
 			} else if (this.getColor() == Color.BLACK && y == 7) {
-				Board.getInstance().setPiece(x, y, null);
-				Board.getInstance().black.remove(this);
+				board.setPiece(x, y, null);
+				board.getBlack().remove(this);
 				Queen queen = new Queen(Color.BLACK, "queen" + file, x, y);
 				System.out.println("Pawn promoted!");
 			}
@@ -130,18 +132,18 @@ public abstract class Piece {
 		boolean isFirst = this.isFirstMove;
 
 		if (x >= 0 && y >= 0 && x <= 7 && y <= 7) {
-			other = Board.getInstance().getPiece(x, y);
+			other = board.getPiece(x, y);
 			if (this.move(x, y, other) == 0) {
 				// captured piece set to original position
-				Board.getInstance().setPiece(x, y, other);
+				board.setPiece(x, y, other);
 				// selected piece set to original position
-				Board.getInstance().setPiece(originX, originY, this);
+				board.setPiece(originX, originY, this);
 				isFirstMove = isFirst;
 				if (other != null) {
 					if (other.getColor() == Color.WHITE) {
-						Board.getInstance().white.add(other);
+						board.getWhite().add(other);
 					} else
-						Board.getInstance().black.add(other);
+						board.getBlack().add(other);
 				}
 				return true;
 			}
