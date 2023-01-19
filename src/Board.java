@@ -175,9 +175,7 @@ public class Board {
 				}
 			}
 		}
-
 		return null;
-
 	}
 
 	public boolean isPathClear(int x1, int y1, int x2, int y2) {
