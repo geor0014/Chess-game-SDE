@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Game {
 	public static void main(String[] args) {
 		Scanner moveChoice = new Scanner(System.in);
+		GameState currentGameState;
 
 		Board board = Board.getInstance();
 
@@ -17,29 +18,29 @@ public class Game {
 				board.printBoard();
 				// check for check
 				if (turns % 2 == 0) {
-					color = Color.WHITE;
+					currentGameState = new WhiteTurnState();
 				} else
-					color = Color.BLACK;
+					currentGameState = new BlackTurnState();
 
-				if (board.staleMate(color) == true) {
+				if (currentGameState.staleMate(currentGameState.getColor()) == true) {
 					System.out.println("game over, stalemate");
 					break;
 				}
-				if (board.checkForCheck(color) == true) {
-					if (board.mate(color) == true) {
+				if (currentGameState.checkForCheck(currentGameState.getColor()) == true) {
+					if (currentGameState.mate(currentGameState.getColor()) == true) {
 
-						System.out.printf("Checkmate, %s wins \n", color == Color.WHITE ? "Black" : "White");
+						System.out.printf("Checkmate, %s wins \n", currentGameState.getColor() == color.WHITE ? "Black" : "White");
 						break;
 					}
-					System.out.printf("%s is in Check! \n", color == Color.WHITE ? "White" : "Black");
+					System.out.printf("%s is in Check! \n", currentGameState.getColor() == color.WHITE ? "White" : "Black");
 				}
 
 				// move choice
-				System.out.printf("%s's turn \n", color == Color.WHITE ? "White" : "Black");
+				System.out.printf("%s's turn \n", currentGameState.getColor() == color.WHITE ? "White" : "Black");
 
 				String move = moveChoice.nextLine();
 				// process move
-				if (board.processMove(move, color) == 0) {
+				if (currentGameState.processMove(move, currentGameState.getColor()) == 0) {
 					turns++;
 				} else {
 					System.out.println("illegal move");
