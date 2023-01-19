@@ -227,6 +227,7 @@ public class Game {
 				}
 		}
 }
+```
 
 # Daniel: Decorator Design pattern
 I implemented the "Decorator" design pattern in ```PiecewithCastling.java``` file in order to add additional functionality to the ```Piece.java``` class for pieces who are able to perform a castle, like ```King.java```
