@@ -1,3 +1,340 @@
+# Viktoria: State Design Pattern
+
+For this design pattern, I first created an interface named GameState.java. Then I created classes WhiteTurnState.java and BlackTurnState.java that implement the GameState.java file. Lastly, I updated the Game.java file
+
+## GameState.java
+The GameState interface declares the state-specific methods.
+```java
+// This interface has several methods that are used to achieve the state design pattern
+public interface Gamestate() {
+    //checks if the game is in stale mate and for what color
+    public boolean staleMate(Color color);
+
+    //checks if the king of the given color is in check
+    public boolean checkForCheck(Color color);
+    
+    //checks if king w/b is in a checkmate
+    public boolean mate(Color color);
+
+    //processes a move for a color and returns a status of move
+    public int processMove(String move, Color color);
+
+    //prints the current state of board
+    public void printBoard();
+
+    // returns a turn color
+    public Color getColor();
+}
+```
+## WhiteTurnState.java
+
+```java
+// handles game logic for turns of the white player
+public class WhiteTurnState implements GameState {
+    // stores white color of the current turn
+    private Color color = Color.WHITE;
+    // represents the game board
+    private Board board = Board.getInstance();
+
+    // checks if it is a stalemate for W/B
+    public boolean staleMate(Color color) {
+        if (board.staleMate(color) == true) {
+            System.out.println("game over, stalemate");
+            return true;
+        }
+        return false;
+    }
+
+    //checks if the king W/B is in check
+    public boolean checkForCheck(Color color) {
+        if (board.checkForCheck(color) == true) {
+            return true;
+        }
+        return false;
+    }
+
+    // checks if W/B is in mate
+    public boolean mate(Color color) {
+        if (board.mate(color) == true) {
+            return true;
+        }
+        return false;
+    }
+
+    // processes move W/B and returns a success or failure of move
+    public int processMove(String move, Color color) {
+        if (board.processMove(move, color) == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+}
+```
+In addition to this class, I also have a class which is the same as class WhiteTurnState expect it is for the color black (BlackTurnState).
+
+## Game.java
+The currentGameState variable is being used to keep track of the current state of the game, which can be either a "WhiteTurnState" or a "BlackTurnState."The code uses the current state to determine if the game is in a stalemate, check,  or checkmate, and to determine which player's turn it is.
+
+```java
+public class ChessFacade {
+    // instace of the Board class, used for state of the game board
+    Board board = Board.getInstance();
+    // reads input from the user when user makes move
+    Scanner moveChoice = new Scanner(System.in);
+    // used to store information about state of the game
+    GameState currentGameState;
+
+    public ChessFacade() {
+        public void startGame() {
+            while (true) {
+                //initialize the board
+                board.startGame();
+                int turns = 0;
+
+                while (true) {
+                    //print current state of the board
+                    board.printBoard();
+
+                    //determine whose turn it is based on number of turns
+                    if (turns % 2 == 0) {
+                        currentGameState = new WhiteTurnState();
+                    } else
+                        currentGameState = new BlackTurnState();
+
+                    //check for stalemate
+                    if (currentGameState.staleMate(currentGameState.getColor()) == true) {
+                        System.out.println("Game over, it is a stalemate.");
+                        break;
+                    }
+                    //check for check
+                    if (currentGameState.checkForCheck(currentGameState.getColor()) == true) {
+                        //check for checkmate
+                        if (currentGameState.mate(currentGameState.getColor()) == true) {
+                            System.out.printf("Checkmate, %s wins \n!",
+                                    currentGameState.getColor() == Color.WHITE ? "Black" : "White");
+                            break;
+                        }
+
+                        System.out.printf("%s is in Check! \n",
+                                currentGameState.getColor() == Color.WHITE ? "White" : "Black");
+                    }
+
+                    // move choice
+                    System.out.printf("%s's turn \n", currentGameState.getColor() == Color.WHITE ? "White" : "Black");
+                    String move = moveChoice.nextLine();
+
+                    // process move
+                    if (currentGameState.processMove(move, currentGameState.getColor()) == 0) {
+                        turns++;
+                    } else {
+                        System.out.println("That is an illegal move, sorry.");
+                    }
+                }
+                //ask if players want to play again
+                playAgain();
+            }
+        }
+
+        // method to prompt the player to play again
+        private void playAgain() {
+            System.out.println("Would you like to play again? Type: y/n");
+            if (moveChoice.next().equals("y")) {
+                return;
+            } else
+                System.exit(0);
+        }
+    }
+}
+}
+```
+Overall, the state design pattern is being used to separate the different states of the game and encapsulate the behavior of the game in a way that makes the code more organized and maintainable.
+
+# Viktoria: Facade design pattern
+The Facade design pattern is used in this code to provide a simplified and unified interface to the complex functionality of a chess game. The ChessFacade class serves as the facade, hiding the complexity of the different game states, the game board and user input.
+## Game.java
+```java
+public class Game {
+	public static void main(String[] args) {
+			//instantiate a new instance of ChessFacade
+	 		ChessFacade chess = new ChessFacade();
+			//start the game
+			 chess.startGame();
+	}
+}
+```
+This class is the entry point of the game, it contains the main method that is executed when the program starts. It creates a new instance of the ChessFacade class and calls the startGame() method on it, which begins the chess game.
+
+## ChessFacade.java
+To achieve the correct facade structure, I extracted the main functionality of the game and moved it to class ChessFacade.
+```java
+public class ChessFacade {
+    // instace of the Board class, used for state of the game board
+    Board board = Board.getInstance();
+    // reads input from the user when user makes move
+    Scanner moveChoice = new Scanner(System.in);
+    // used to store information about state of the game
+    GameState currentGameState;
+
+    public ChessFacade() {
+        public void startGame() {
+            while (true) {
+                //initialize the board
+                board.startGame();
+                int turns = 0;
+
+                while (true) {
+                    //print current state of the board
+                    board.printBoard();
+
+                    //determine whose turn it is based on number of turns
+                    if (turns % 2 == 0) {
+                        currentGameState = new WhiteTurnState();
+                    } else
+                        currentGameState = new BlackTurnState();
+
+                    //check for stalemate
+                    if (currentGameState.staleMate(currentGameState.getColor()) == true) {
+                        System.out.println("Game over, it is a stalemate.");
+                        break;
+                    }
+                    //check for check
+                    if (currentGameState.checkForCheck(currentGameState.getColor()) == true) {
+                        //check for checkmate
+                        if (currentGameState.mate(currentGameState.getColor()) == true) {
+                            System.out.printf("Checkmate, %s wins \n!",
+                                    currentGameState.getColor() == Color.WHITE ? "Black" : "White");
+                            break;
+                        }
+
+                        System.out.printf("%s is in Check! \n",
+                                currentGameState.getColor() == Color.WHITE ? "White" : "Black");
+                    }
+
+                    // move choice
+                    System.out.printf("%s's turn \n", currentGameState.getColor() == Color.WHITE ? "White" : "Black");
+                    String move = moveChoice.nextLine();
+
+                    // process move
+                    if (currentGameState.processMove(move, currentGameState.getColor()) == 0) {
+                        turns++;
+                    } else {
+                        System.out.println("That is an illegal move, sorry.");
+                    }
+                }
+                //ask if players want to play again
+                playAgain();
+            }
+        }
+
+        // method to prompt the player to play again
+        private void playAgain() {
+            System.out.println("Would you like to play again? Type: y/n");
+            if (moveChoice.next().equals("y")) {
+                return;
+            } else
+                System.exit(0);
+        }
+    }
+}
+}
+```
+
+# Viktoria: Factory method design pattern
+In a factory method design pattern, a factory class is defined that has a set of methods for creating objects of different types.
+
+## PieceFactory.java
+I implemented the PieceFactory class for creating all chess piece objects (Pawn, Rook, Knight, Bishop, Queen, King). The factory methods take in the same set of parameters (color, ID, startX, startY) and return an instance of the corresponding chess piece class. The factory pattern is used to create objects without specifying the exact class of object that will be created. This allows for a level of abstraction and flexibility in the code, as the client code can simply request an object from the factory, without needing to know the specific class that will be instantiated.
+```java
+
+public class PieceFactory() {
+
+public Piece createPawn(Color color, String ID, int startX, int startY) {
+        return new Pawn(color, ID, startX, startY);
+        }
+
+public Piece createRook(Color color, String ID, int startX, int startY) {
+        return new Rook(color, ID, startX, startY);
+        }
+
+public Piece createKnight(Color color, String ID, int startX, int startY) {
+        return new Knight(color, ID, startX, startY);
+        }
+
+public Piece createBishop(Color color, String ID, int startX, int startY) {
+        return new Bishop(color, ID, startX, startY);
+        }
+
+public Piece createQueen(Color color, String ID, int startX, int startY) {
+        return new Queen(color, ID, startX, startY);
+        }
+
+public Piece createKing(Color color, String ID, int startX, int startY) {
+        return new King(color, ID, startX, startY);
+        }
+
+}
+```
+
+## Board.java
+The startGame method first prints out instructions on how to play the game, and then creates the chess pieces using the factory methods from the PieceFactory class. The chess pieces are then given specific names and positions on the board.
+```java
+public void startGame() {
+		System.out.println("How to play:");
+		System.out.println("For pawns, type in \"pawn\" followed by the file letter. For example, \"pawnA\"");
+		System.out.println("For bishops, knights and rooks, put \"Q\" or \"K\" to specify Queen's or King's side");
+		System.out.println("provide a space and then enter a valid tile. For example, \"bishopK c4\"");
+		System.out.println(
+				"Pawns auto-promote to queens. The new queens are referenced by what the pawns file was. \"queenH\"");
+		System.out.println(
+				"To castle, type castle, followed by a space and then a capital K or Q to specify a side. \"castle Q\"\n");
+
+		// black
+		this.blackRookQ = this.pieceFactory.createRook(Color.BLACK, "rookQ", 0, 0);
+		this.blackKnightQ = this.pieceFactory.createKnight(Color.BLACK, "knightQ", 1, 0);
+		this.blackBishopQ = this.pieceFactory.createBishop(Color.BLACK, "bishopQ", 2, 0);
+		this.blackQueen = this.pieceFactory.createQueen(Color.BLACK, "queen", 3, 0);
+		this.blackKing = this.pieceFactory.createKing(Color.BLACK, "king", 4, 0);
+		//
+		this.blackCastlingKing = new PieceWithCastling(blackKing);
+		//
+		this.blackBishopK = this.pieceFactory.createBishop(Color.BLACK, "bishopK", 5, 0);
+		this.blackknightK = this.pieceFactory.createKnight(Color.BLACK, "knightK", 6, 0);
+		this.blackRookK = this.pieceFactory.createRook(Color.BLACK, "rookK", 7, 0);
+		this.blackPawnA = this.pieceFactory.createPawn(Color.BLACK, "pawnA", 0, 1);
+		this.blackPawnB = this.pieceFactory.createPawn(Color.BLACK, "pawnB", 1, 1);
+		this.blackPawnC = this.pieceFactory.createPawn(Color.BLACK, "pawnC", 2, 1);
+		this.blackPawnD = this.pieceFactory.createPawn(Color.BLACK, "pawnD", 3, 1);
+		this.blackPawnE = this.pieceFactory.createPawn(Color.BLACK, "pawnE", 4, 1);
+		this.blackPawnF = this.pieceFactory.createPawn(Color.BLACK, "pawnF", 5, 1);
+		this.blackPawnG = this.pieceFactory.createPawn(Color.BLACK, "pawnG", 6, 1);
+		this.blackPawnH = this.pieceFactory.createPawn(Color.BLACK, "pawnH", 7, 1);
+
+		// white
+		this.whiteRookQ = this.pieceFactory.createRook(Color.WHITE, "rookQ", 0, 7);
+		this.whiteKnightQ = this.pieceFactory.createKnight(Color.WHITE, "knightQ", 1, 7);
+		this.whiteBishopQ = this.pieceFactory.createBishop(Color.WHITE, "bishopQ", 2, 7);
+		this.whiteQueen = this.pieceFactory.createQueen(Color.WHITE, "queen", 3, 7);
+		this.whiteKing = this.pieceFactory.createKing(Color.WHITE, "king", 4, 7);
+		//
+		this.whiteCastlingKing = new PieceWithCastling(whiteKing);
+		//
+		this.whiteBishopK = this.pieceFactory.createBishop(Color.WHITE, "bishopK", 5, 7);
+		this.whiteKnightK = this.pieceFactory.createKnight(Color.WHITE, "knightK", 6, 7);
+		this.whiteRookK = this.pieceFactory.createRook(Color.WHITE, "rookK", 7, 7);
+
+
+		this.whitePawnA = this.pieceFactory.createPawn(Color.WHITE, "pawnA", 0, 6);
+		this.whitePawnB = this.pieceFactory.createPawn(Color.WHITE, "pawnB", 1, 6);
+		this.whitePawnC = this.pieceFactory.createPawn(Color.WHITE, "pawnC", 2, 6);
+		this.whitePawnD = this.pieceFactory.createPawn(Color.WHITE, "pawnD", 3, 6);
+		this.whitePawnE = this.pieceFactory.createPawn(Color.WHITE, "pawnE", 4, 6);
+		this.whitePawnF = this.pieceFactory.createPawn(Color.WHITE, "pawnF", 5, 6);
+		this.whitePawnG = this.pieceFactory.createPawn(Color.WHITE, "pawnG", 6, 6);
+		this.whitePawnH = this.pieceFactory.createPawn(Color.WHITE, "pawnH", 7, 6);
+	}
+```
+
 # Daniel: Strategy Design Pattern
 
 I implemented the "Strategy" design pattern in the ```Piece.java``` file to handle the moving of the pieces. I created ```MoveStrategy.java``` interface and a different strategy for each piece, for example ```KnightMoveStrategy.java```
