@@ -228,6 +228,263 @@ public class Game {
 		}
 }
 
+# Daniel: Decorator Design pattern
+I implemented the "Decorator" design pattern in ```PiecewithCastling.java``` file in order to add additional functionality to the ```Piece.java``` class for pieces who are able to perform a castle, like ```King.java```
+## Implementation
+### IChessPiece.java
+this is the ```interface``` that both ```Piece.java``` and ```DecoratedPiece.java``` implement
+```java
+public interface IChessPiece {
+    public String getID();
+
+    public boolean matchID(String ID);
+
+    public Color getColor();
+
+    public boolean sameColor(Piece otherPiece);
+
+    public int getX();
+
+    public int getY();
+
+    public void setX(int newX);
+
+    public void setY(int newY);
+
+    public boolean possibleMove(int x, int y);
+
+    public int move(int x, int y, Piece other);
+
+    public boolean testMove(int x, int y);
+
+    public boolean canMove();
+}
+```
+### DecoratedPiece.java
+This is the base decorator
+```java 
+public class DecoratedPiece implements IChessPiece {
+    private Piece piece;
+    protected boolean isFirstMove;
+
+    public DecoratedPiece(Piece piece) {
+        this.piece = piece;
+        this.isFirstMove = piece.getIsFirstMove();
+    }
+
+    @Override
+    public String getID() {
+        return piece.getID();
+    }
+
+    @Override
+    public boolean matchID(String ID) {
+        return piece.matchID(ID);
+    }
+
+    @Override
+    public Color getColor() {
+        return piece.getColor();
+    }
+
+    @Override
+    public boolean sameColor(Piece otherPiece) {
+        return piece.sameColor(otherPiece);
+    }
+
+    @Override
+    public int getX() {
+        return piece.getX();
+    }
+
+    @Override
+    public int getY() {
+        return piece.getY();
+    }
+
+    @Override
+    public void setX(int newX) {
+        piece.setX(newX);
+    }
+
+    @Override
+    public void setY(int newY) {
+        piece.setY(newY);
+    }
+
+    @Override
+    public boolean possibleMove(int x, int y) {
+        return piece.possibleMove(x, y);
+    }
+
+    @Override
+    public int move(int x, int y, Piece other) {
+        return piece.move(x, y, other);
+
+    }
+
+    @Override
+    public boolean testMove(int x, int y) {
+        return piece.testMove(x, y);
+    }
+
+    @Override
+    public boolean canMove() {
+        return piece.canMove();
+    }
+
+}
+```
+### PieceWithCastling.java
+this is the concrete decorator
+```java 
+public class PieceWithCastling extends DecoratedPiece {
+
+    Board board = Board.getInstance();
+
+    public PieceWithCastling(Piece piece) {
+        super(piece);
+    }
+
+    public int castle(String side) {
+        Rook rook = (Rook) board.getPiece("rook" + side, this.getColor());
+        int originX = this.getX();
+        int originY = this.getY();
+
+        if (this.isFirstMove != true || rook.isFirstMove != true) {
+            System.out.println("Cannot castle if king or rook has already moved");
+            return -1;
+        }
+        if (board.isPathClear(this.getX(), this.getY(), rook.getX(), rook.getY()) != true) {
+            System.out.println("Cannot castle across a line of check");
+            return -1;
+        }
+
+        if (this.getColor() == Color.WHITE) {
+
+            if (side.equals("K")) {
+                // cant castle accross a line of check
+                if (this.move(5, 7, null) == 0 && this.move(6, 7, null) == 0) {
+                    board.setPiece(rook.getX(), rook.getY(), null);
+                    board.setPiece(5, 7, rook);
+                    return 0;
+                } else {
+                    board.setPiece(this.getX(), this.getY(), null);
+                    board.setPiece(originX, originY, this);
+                    return -1;
+                }
+            }
+
+            else if (side.equals("Q")) {
+                if (this.move(3, 7, null) == 0 && this.move(2, 7, null) == 0) {
+                    board.setPiece(rook.getX(), rook.getY(), null);
+                    board.setPiece(3, 7, rook);
+                    return 0;
+                } else {
+                    board.setPiece(this.getX(), this.getY(), null);
+                    board.setPiece(originX, originY, this);
+                    return -1;
+                }
+            }
+        }
+
+        if (this.getColor() == Color.BLACK) {
+            if (side.equals("K")) {
+                if (this.move(5, 0, null) == 0 && this.move(6, 0, null) == 0) {
+                    board.setPiece(rook.getX(), rook.getY(), null);
+                    board.setPiece(5, 0, rook);
+                    return 0;
+                } else {
+                    board.setPiece(this.getX(), this.getY(), null);
+                    board.setPiece(originX, originY, this);
+                    return -1;
+                }
+            }
+
+            else if (side.equals("Q")) {
+                if (this.move(3, 0, null) == 0 && this.move(2, 0, null) == 0) {
+                    board.setPiece(rook.getX(), rook.getY(), null);
+                    board.setPiece(3, 0, rook);
+                    return 0;
+                } else {
+                    board.setPiece(this.getX(), this.getY(), null);
+                    board.setPiece(originX, originY, this);
+                    return -1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+```
+### Usage in ```Board.java```
+```java
+import java.util.ArrayList;
+
+public class Board {
+	private static Board instance = null;
+	private Piece board[][] = new Piece[8][8];
+
+    .....other fields
+	private Board() {
+	}
+
+	public static Board getInstance() {
+		if (instance == null) {
+			instance = new Board();
+		}
+		return instance;
+	}
+
+	public void printBoard() {
+	... board printing logic
+	}
+
+	public void startGame() {
+        ... instructions to play
+		// black
+		this.blackRookQ = new Rook(Color.BLACK, "rookQ", 0, 0);
+		this.blackKnightQ = new Knight(Color.BLACK, "knightQ", 1, 0);
+		this.blackBishopQ = new Bishop(Color.BLACK, "bishopQ", 2, 0);
+		this.blackQueen = new Queen(Color.BLACK, "queen", 3, 0);
+		this.blackKing = new King(Color.BLACK, "king", 4, 0);
+		// Decorator implementation
+		this.blackCastlingKing = new PieceWithCastling(blackKing);
+		//
+		this.blackBishopK = new Bishop(Color.BLACK, "bishopK", 5, 0);
+		this.blackknightK = new Knight(Color.BLACK, "knightK", 6, 0);
+		this.blackRookK = new Rook(Color.BLACK, "rookK", 7, 0);
+
+		this.blackPawnA = new Pawn(Color.BLACK, "pawnA", 0, 1);
+        .. other pawns
+
+		// white 
+	    ... white pieces
+	}
+
+    ... other methods
+
+	public int processMove(String move, Color color) {
+
+		String[] splitStr = move.split(" ");
+		String piece = splitStr[0];
+
+		if (piece.equals("castle")) {
+			if (color == Color.BLACK) {
+			// calling the castle method
+				this.blackCastlingKing.castle(splitStr[1]);
+			} else {
+			// calling the castle method
+				this.whiteCastlingKing.castle(splitStr[1]);
+			}
+		}
+        ....
+
+	}
+    .. getters and setters
+]
+
+
 ```
 
 ## How to build and run
