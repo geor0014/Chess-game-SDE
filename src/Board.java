@@ -52,6 +52,7 @@ public class Board {
 	private Piece whitePawnH;
 
 	private PieceFactory pieceFactory = new PieceFactory();
+
 	private Board() {
 	}
 
@@ -129,7 +130,6 @@ public class Board {
 		this.whiteBishopK = this.pieceFactory.createBishop(Color.WHITE, "bishopK", 5, 7);
 		this.whiteKnightK = this.pieceFactory.createKnight(Color.WHITE, "knightK", 6, 7);
 		this.whiteRookK = this.pieceFactory.createRook(Color.WHITE, "rookK", 7, 7);
-
 
 		this.whitePawnA = this.pieceFactory.createPawn(Color.WHITE, "pawnA", 0, 6);
 		this.whitePawnB = this.pieceFactory.createPawn(Color.WHITE, "pawnB", 1, 6);

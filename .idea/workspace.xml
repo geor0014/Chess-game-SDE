@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67ee05ca-9670-4506-9f91-f8823ebd44d2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/PieceFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BlackTurnState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BlackTurnState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ChessFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ChessFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WhiteTurnState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WhiteTurnState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +62,7 @@
       <option name="presentableId" value="Default" />
       <updated>1673883507924</updated>
       <workItem from="1673883509172" duration="1660000" />
-      <workItem from="1674035129938" duration="12132000" />
+      <workItem from="1674035129938" duration="20464000" />
     </task>
     <servers />
   </component>
@@ -77,15 +79,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/WhiteTurnState.java</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
