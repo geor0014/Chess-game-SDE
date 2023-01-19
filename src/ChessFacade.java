@@ -1,122 +1,75 @@
 import java.util.Scanner;
 
 
-// extracted funcniilatiy of game, you have chess, facade
+// the facade for the game
 public class ChessFacade {
-    
+    // instace of the Board class, used for state of the game board
     Board board = Board.getInstance();
+    // reads input from the user when user makes move
     Scanner moveChoice = new Scanner(System.in);
-    IGameState currentGameState;
-    
+    // used to store information about state of the game
+    GameState currentGameState;
 
     public ChessFacade() {
-
-    }
-
-
-
-    public void startGame() {
-
-        while (true) {
-
-            board.startGame();
-
-
-
-            int turns = 0;
-
-
-
+        public void startGame() {
             while (true) {
+                //initialize the board
+                board.startGame();
+                int turns = 0;
 
-                board.printBoard();
+                while (true) {
+                    //print current state of the board
+                    board.printBoard();
 
-                // check for check
+                    //determine whose turn it is based on number of turns
+                    if (turns % 2 == 0) {
+                        currentGameState = new WhiteTurnState();
+                    } else
+                        currentGameState = new BlackTurnState();
 
-                if (turns % 2 == 0) {
-
-                    currentGameState = new WhiteTurnState();
-
-                } else
-
-                    currentGameState = new BlackTurnState();
-
-
-
-                if (currentGameState.staleMate(currentGameState.getColor()) == true) {
-
-                    System.out.println("game over, stalemate");
-
-                    break;
-
-                }
-
-                if (currentGameState.checkForCheck(currentGameState.getColor()) == true) {
-
-                    if (currentGameState.mate(currentGameState.getColor()) == true) {
-
-
-
-                        System.out.printf("Checkmate, %s wins \n",
-
-                                currentGameState.getColor() == Color.WHITE ? "Black" : "White");
-
+                    //check for stalemate
+                    if (currentGameState.staleMate(currentGameState.getColor()) == true) {
+                        System.out.println("Game over, it is a stalemate.");
                         break;
+                    }
+                    //check for check
+                    if (currentGameState.checkForCheck(currentGameState.getColor()) == true) {
+                        //check for checkmate
+                        if (currentGameState.mate(currentGameState.getColor()) == true) {
+                            System.out.printf("Checkmate, %s wins \n!",
+                                    currentGameState.getColor() == Color.WHITE ? "Black" : "White");
+                            break;
+                        }
 
+                        System.out.printf("%s is in Check! \n",
+                                currentGameState.getColor() == Color.WHITE ? "White" : "Black");
                     }
 
-                    System.out.printf("%s is in Check! \n",
+                    // move choice
+                    System.out.printf("%s's turn \n", currentGameState.getColor() == Color.WHITE ? "White" : "Black");
+                    String move = moveChoice.nextLine();
 
-                            currentGameState.getColor() == Color.WHITE ? "White" : "Black");
-
+                    // process move
+                    if (currentGameState.processMove(move, currentGameState.getColor()) == 0) {
+                        turns++;
+                    } else {
+                        System.out.println("That is an illegal move, sorry.");
+                    }
                 }
-
-
-
-                // move choice
-
-                System.out.printf("%s's turn \n", currentGameState.getColor() == Color.WHITE ? "White" : "Black");
-
-
-
-                String move = moveChoice.nextLine();
-
-                // process move
-
-                if (currentGameState.processMove(move, currentGameState.getColor()) == 0) {
-
-                    turns++;
-
-                } else {
-
-                    System.out.println("illegal move");
-
-                }
-
-
-
+                //ask if players want to play again
+                playAgain();
             }
-
-            playagain();
-
         }
 
+        // method to prompt the player to play again
+        private void playAgain() {
+            System.out.println("Would you like to play again? Type: y/n");
+            if (moveChoice.next().equals("y")) {
+                return;
+            } else
+                System.exit(0);
+        }
     }
-
-
-
-    private void playagain() {
-
-        System.out.println("would you like to play again? y/n");
-
-        if (moveChoice.next().equals("y")) {
-
-            return;
-
-        } else
-
-            System.exit(0);
-
-    }
-
 }
+}
+    
