@@ -1,4 +1,4 @@
-# Console Chess that utilizes of Desing patterns.
+# Console Chess game that utilizes Desing patterns.
 This chess game is the result of the task given to us by Andres for the Software Development Class. It was done by Viktoria Žiaková and Daniel Georgiev.
 #### Details of how the work was distributed.
  - ***Initial Chess game logic***: This was developed by both team members using some helper code from StackOverflow and other resources.
