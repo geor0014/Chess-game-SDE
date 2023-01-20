@@ -1,12 +1,69 @@
 import java.util.ArrayList;
 
 public class Board {
-	public static ArrayList<Piece> black = new ArrayList<Piece>();
-	public static ArrayList<Piece> white = new ArrayList<Piece>();
+	private static Board instance = null;
 
-	static Piece board[][] = new Piece[8][8];
+	private ArrayList<Piece> black = new ArrayList<Piece>();
+	private ArrayList<Piece> white = new ArrayList<Piece>();
 
-	static void printBoard() {
+	private Piece board[][] = new Piece[8][8];
+
+	private Piece blackRookQ;
+	private Piece blackKnightQ;
+	private Piece blackBishopQ;
+	private Piece blackQueen;
+	private Piece blackKing;
+	//
+	private PieceWithCastling blackCastlingKing;
+	//
+	private Piece blackBishopK;
+	private Piece blackknightK;
+	private Piece blackRookK;
+
+	private Piece blackPawnA;
+	private Piece blackPawnB;
+	private Piece blackPawnC;
+	private Piece blackPawnD;
+	private Piece blackPawnE;
+	private Piece blackPawnF;
+	private Piece blackPawnG;
+	private Piece blackPawnH;
+
+	// white
+	private Piece whiteRookQ;
+	private Piece whiteKnightQ;
+	private Piece whiteBishopQ;
+	private Piece whiteQueen;
+	private Piece whiteKing;
+	//
+	private PieceWithCastling whiteCastlingKing;
+	//
+	private Piece whiteBishopK;
+	private Piece whiteKnightK;
+	private Piece whiteRookK;
+
+	private Piece whitePawnA;
+	private Piece whitePawnB;
+	private Piece whitePawnC;
+	private Piece whitePawnD;
+	private Piece whitePawnE;
+	private Piece whitePawnF;
+	private Piece whitePawnG;
+	private Piece whitePawnH;
+
+	private PieceFactory pieceFactory = new PieceFactory();
+
+	private Board() {
+	}
+
+	public static Board getInstance() {
+		if (instance == null) {
+			instance = new Board();
+		}
+		return instance;
+	}
+
+	public void printBoard() {
 		System.out.println("    a   b   c   d   e   f   g   h");
 
 		System.out.println("  ---------------------------------");
@@ -30,7 +87,7 @@ public class Board {
 		System.out.println();
 	}
 
-	static void startGame() {
+	public void startGame() {
 		System.out.println("How to play:");
 		System.out.println("For pawns, type in \"pawn\" followed by the file letter. For example, \"pawnA\"");
 		System.out.println("For bishops, knights and rooks, put \"Q\" or \"K\" to specify Queen's or King's side");
@@ -41,60 +98,65 @@ public class Board {
 				"To castle, type castle, followed by a space and then a capital K or Q to specify a side. \"castle Q\"\n");
 
 		// black
-		new Rook(Color.BLACK, "rookQ", 0, 0);
-		new Knight(Color.BLACK, "knightQ", 1, 0);
-		new Bishop(Color.BLACK, "bishopQ", 2, 0);
-		new Queen(Color.BLACK, "queen", 3, 0);
-		new King(Color.BLACK, "king", 4, 0);
-		new Bishop(Color.BLACK, "bishopK", 5, 0);
-		new Knight(Color.BLACK, "knightK", 6, 0);
-		new Rook(Color.BLACK, "rookK", 7, 0);
-
-		new Pawn(Color.BLACK, "pawnA", 0, 1);
-		new Pawn(Color.BLACK, "pawnB", 1, 1);
-		new Pawn(Color.BLACK, "pawnC", 2, 1);
-		new Pawn(Color.BLACK, "pawnD", 3, 1);
-		new Pawn(Color.BLACK, "pawnE", 4, 1);
-		new Pawn(Color.BLACK, "pawnF", 5, 1);
-		new Pawn(Color.BLACK, "pawnG", 6, 1);
-		new Pawn(Color.BLACK, "pawnH", 7, 1);
+		this.blackRookQ = this.pieceFactory.createRook(Color.BLACK, "rookQ", 0, 0);
+		this.blackKnightQ = this.pieceFactory.createKnight(Color.BLACK, "knightQ", 1, 0);
+		this.blackBishopQ = this.pieceFactory.createBishop(Color.BLACK, "bishopQ", 2, 0);
+		this.blackQueen = this.pieceFactory.createQueen(Color.BLACK, "queen", 3, 0);
+		this.blackKing = this.pieceFactory.createKing(Color.BLACK, "king", 4, 0);
+		//
+		this.blackCastlingKing = new PieceWithCastling(blackKing);
+		//
+		this.blackBishopK = this.pieceFactory.createBishop(Color.BLACK, "bishopK", 5, 0);
+		this.blackknightK = this.pieceFactory.createKnight(Color.BLACK, "knightK", 6, 0);
+		this.blackRookK = this.pieceFactory.createRook(Color.BLACK, "rookK", 7, 0);
+		this.blackPawnA = this.pieceFactory.createPawn(Color.BLACK, "pawnA", 0, 1);
+		this.blackPawnB = this.pieceFactory.createPawn(Color.BLACK, "pawnB", 1, 1);
+		this.blackPawnC = this.pieceFactory.createPawn(Color.BLACK, "pawnC", 2, 1);
+		this.blackPawnD = this.pieceFactory.createPawn(Color.BLACK, "pawnD", 3, 1);
+		this.blackPawnE = this.pieceFactory.createPawn(Color.BLACK, "pawnE", 4, 1);
+		this.blackPawnF = this.pieceFactory.createPawn(Color.BLACK, "pawnF", 5, 1);
+		this.blackPawnG = this.pieceFactory.createPawn(Color.BLACK, "pawnG", 6, 1);
+		this.blackPawnH = this.pieceFactory.createPawn(Color.BLACK, "pawnH", 7, 1);
 
 		// white
-		new Rook(Color.WHITE, "rookQ", 0, 7);
-		new Knight(Color.WHITE, "knightQ", 1, 7);
-		new Bishop(Color.WHITE, "bishopQ", 2, 7);
-		new Queen(Color.WHITE, "queen", 3, 7);
-		new King(Color.WHITE, "king", 4, 7);
-		new Bishop(Color.WHITE, "bishopK", 5, 7);
-		new Knight(Color.WHITE, "knightK", 6, 7);
-		new Rook(Color.WHITE, "rookK", 7, 7);
+		this.whiteRookQ = this.pieceFactory.createRook(Color.WHITE, "rookQ", 0, 7);
+		this.whiteKnightQ = this.pieceFactory.createKnight(Color.WHITE, "knightQ", 1, 7);
+		this.whiteBishopQ = this.pieceFactory.createBishop(Color.WHITE, "bishopQ", 2, 7);
+		this.whiteQueen = this.pieceFactory.createQueen(Color.WHITE, "queen", 3, 7);
+		this.whiteKing = this.pieceFactory.createKing(Color.WHITE, "king", 4, 7);
+		//
+		this.whiteCastlingKing = new PieceWithCastling(whiteKing);
+		//
+		this.whiteBishopK = this.pieceFactory.createBishop(Color.WHITE, "bishopK", 5, 7);
+		this.whiteKnightK = this.pieceFactory.createKnight(Color.WHITE, "knightK", 6, 7);
+		this.whiteRookK = this.pieceFactory.createRook(Color.WHITE, "rookK", 7, 7);
 
-		new Pawn(Color.WHITE, "pawnA", 0, 6);
-		new Pawn(Color.WHITE, "pawnB", 1, 6);
-		new Pawn(Color.WHITE, "pawnC", 2, 6);
-		new Pawn(Color.WHITE, "pawnD", 3, 6);
-		new Pawn(Color.WHITE, "pawnE", 4, 6);
-		new Pawn(Color.WHITE, "pawnF", 5, 6);
-		new Pawn(Color.WHITE, "pawnG", 6, 6);
-		new Pawn(Color.WHITE, "pawnH", 7, 6);
+		this.whitePawnA = this.pieceFactory.createPawn(Color.WHITE, "pawnA", 0, 6);
+		this.whitePawnB = this.pieceFactory.createPawn(Color.WHITE, "pawnB", 1, 6);
+		this.whitePawnC = this.pieceFactory.createPawn(Color.WHITE, "pawnC", 2, 6);
+		this.whitePawnD = this.pieceFactory.createPawn(Color.WHITE, "pawnD", 3, 6);
+		this.whitePawnE = this.pieceFactory.createPawn(Color.WHITE, "pawnE", 4, 6);
+		this.whitePawnF = this.pieceFactory.createPawn(Color.WHITE, "pawnF", 5, 6);
+		this.whitePawnG = this.pieceFactory.createPawn(Color.WHITE, "pawnG", 6, 6);
+		this.whitePawnH = this.pieceFactory.createPawn(Color.WHITE, "pawnH", 7, 6);
 	}
 
 	// set piece to provided coordinates
-	public static void setPiece(int x, int y, Piece piece) {
+	public void setPiece(int x, int y, IChessPiece piece) {
 		if (piece != null) {
 			piece.setX(x);
 			piece.setY(y);
 		}
-		board[y][x] = piece;
+		board[y][x] = (Piece) piece;
 	}
 
 	// check spot on board
-	public static Piece getPiece(int x, int y) {
+	public Piece getPiece(int x, int y) {
 		return board[y][x];
 	}
 
 	// match String piece from user with Piece on board
-	public static Piece getPiece(String piece, Color color) {
+	public Piece getPiece(String piece, Color color) {
 
 		if (color == Color.WHITE) {
 
@@ -120,7 +182,7 @@ public class Board {
 
 	}
 
-	public static boolean isPathClear(int x1, int y1, int x2, int y2) {
+	public boolean isPathClear(int x1, int y1, int x2, int y2) {
 
 		int xDistance = x2 - x1;
 		int yDistance = y2 - y1;
@@ -159,14 +221,17 @@ public class Board {
 
 	}
 
-	static int processMove(String move, Color color) {
+	public int processMove(String move, Color color) {
 
 		String[] splitStr = move.split(" ");
 		String piece = splitStr[0];
 
 		if (piece.equals("castle")) {
-			King king = (King) getPiece("king", color);
-			return king.castle(splitStr[1]);
+			if (color == Color.BLACK) {
+				this.blackCastlingKing.castle(splitStr[1]);
+			} else {
+				this.whiteCastlingKing.castle(splitStr[1]);
+			}
 		}
 
 		// piece selected to move
@@ -197,7 +262,7 @@ public class Board {
 
 	}
 
-	public static boolean checkForCheck(Color color) {
+	public boolean checkForCheck(Color color) {
 
 		Piece king = getPiece("king", color);
 
@@ -222,7 +287,7 @@ public class Board {
 		return false;
 	}
 
-	public static boolean mate(Color color) {
+	public boolean mate(Color color) {
 
 		if (color == Color.WHITE) {
 			for (int i = 0; i < white.size(); i++) {
@@ -243,7 +308,7 @@ public class Board {
 		return true;
 	}
 
-	public static boolean staleMate(Color color) {
+	public boolean staleMate(Color color) {
 
 		// insufficient material stalemate
 		Piece knightK = getPiece("knightK", color);
@@ -273,6 +338,14 @@ public class Board {
 
 		return false;
 
+	}
+
+	public ArrayList<Piece> getWhite() {
+		return white;
+	}
+
+	public ArrayList<Piece> getBlack() {
+		return black;
 	}
 
 }
